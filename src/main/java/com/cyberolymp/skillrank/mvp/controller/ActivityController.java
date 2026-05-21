@@ -1,5 +1,6 @@
 package com.cyberolymp.skillrank.mvp.controller;
 
+import com.cyberolymp.skillrank.mvp.dto.ActivityHistoryResponse;
 import com.cyberolymp.skillrank.mvp.dto.ActivityRequest;
 import com.cyberolymp.skillrank.mvp.dto.ActivityResponse;
 import com.cyberolymp.skillrank.mvp.dto.LeaderboardResponse;
@@ -32,5 +33,10 @@ public class ActivityController {
     @GetMapping("/api/leaderboard/top/")
     public List<LeaderboardResponse> getTopUser(){
        return leaderboardService.getTopUsers();
+    }
+
+    @GetMapping("/api/activities/")
+    public List<ActivityHistoryResponse> getAllActivities(){
+        return activityService.getAllActivities() ;
     }
 }

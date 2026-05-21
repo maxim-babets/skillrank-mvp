@@ -1,8 +1,8 @@
 # SkillRank MVP
 
-SkillRank MVP is an event-driven leaderboard backend built with Spring Boot, Kafka, Redis, and Docker.
+SkillRank MVP is an event-driven leaderboard backend built with Spring Boot, Kafka, Redis, PostgreSQL, and Docker.
 
-The project simulates user activity events such as creating posts or completing actions. Each activity is published to Kafka, consumed asynchronously, and used to update a Redis Sorted Set leaderboard.
+The project simulates user activity events such as creating posts or completing actions. Each activity is persisted in PostgreSQL, published to Kafka, consumed asynchronously, and used to update a Redis Sorted Set leaderboard.
 
 ---
 
@@ -13,8 +13,12 @@ The project simulates user activity events such as creating posts or completing 
 - Spring Web
 - Spring Kafka
 - Spring Data Redis
+- Spring Data JPA
+- Hibernate
+- PostgreSQL
 - Apache Kafka
 - Redis
+- Swagger/OpenAPI
 - Docker Compose
 - Maven
 
@@ -24,11 +28,14 @@ The project simulates user activity events such as creating posts or completing 
 
 - REST API for creating user activity events
 - Request validation with Jakarta Validation
+- PostgreSQL activity persistence
 - Kafka producer for publishing activity events
 - Kafka consumer for processing activity events
 - Redis ZSET leaderboard storage
+- Activity history API
 - Leaderboard ranking API
-- Docker Compose setup for Kafka and Redis
+- Swagger/OpenAPI documentation
+- Docker Compose setup for Kafka, Redis, and PostgreSQL
 
 ---
 
@@ -41,6 +48,8 @@ ActivityController
         ↓
 ActivityService
         ↓
+Save Activity to PostgreSQL
+        ↓
 Kafka Producer
         ↓
 Kafka Topic: activity-events
@@ -51,6 +60,8 @@ Redis ZSET: leaderboard
         ↓
 GET /api/leaderboard/top
 ```
+
+---
 
 ## API Endpoints
 
@@ -106,9 +117,33 @@ Response:
 ]
 ```
 
+---
+
+### Get Activity History
+
+```http
+GET /api/activities
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 1,
+    "userId": 2,
+    "type": "POST_CREATED",
+    "points": 12,
+    "createdAt": "2026-05-20T19:00:44.921912"
+  }
+]
+```
+
+---
+
 ## How to Run
 
-Start Kafka and Redis:
+Start infrastructure:
 
 ```bash
 docker compose up -d
@@ -120,14 +155,22 @@ Run the Spring Boot application:
 ./mvnw spring-boot:run
 ```
 
+Open Swagger UI:
+
+```text
+http://localhost:8080/swagger-ui/index.html
+```
+
 ---
 
 ## Current Status
 
-The current version supports an end-to-end event-driven flow:
+The current version supports a complete event-driven backend flow:
 
 ```text
 HTTP request
+    ↓
+PostgreSQL persistence
     ↓
 Kafka event
     ↓
@@ -135,15 +178,16 @@ Kafka consumer
     ↓
 Redis leaderboard
     ↓
-API response
+REST API response
 ```
 
 ---
 
 ## Next Improvements
 
-- Add PostgreSQL for persistent activity history
-- Add Swagger/OpenAPI documentation
 - Add global error handling
+- Add pagination for activity history
 - Add unit and integration tests
 - Add user profiles and usernames
+- Add JWT authentication
+- Add Kafka retry and dead letter queue support
