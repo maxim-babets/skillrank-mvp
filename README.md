@@ -28,6 +28,7 @@ The project simulates user activity events such as creating posts or completing 
 
 - REST API for creating user activity events
 - Request validation with Jakarta Validation
+- Global exception handling for validation errors
 - PostgreSQL activity persistence
 - Kafka producer for publishing activity events
 - Kafka consumer for processing activity events
@@ -45,6 +46,8 @@ The project simulates user activity events such as creating posts or completing 
 POST /api/activities
         ↓
 ActivityController
+        ↓
+Request Validation
         ↓
 ActivityService
         ↓
@@ -89,6 +92,16 @@ Response:
   "type": "POST_CREATED",
   "points": 5,
   "message": "Activity processed successfully"
+}
+```
+
+Validation error example:
+
+```json
+{
+  "status": 400,
+  "message": "Validation failed",
+  "timestamp": "2026-05-20T20:45:00"
 }
 ```
 
@@ -170,6 +183,8 @@ The current version supports a complete event-driven backend flow:
 ```text
 HTTP request
     ↓
+Request validation
+    ↓
 PostgreSQL persistence
     ↓
 Kafka event
@@ -185,7 +200,6 @@ REST API response
 
 ## Next Improvements
 
-- Add global error handling
 - Add pagination for activity history
 - Add unit and integration tests
 - Add user profiles and usernames
