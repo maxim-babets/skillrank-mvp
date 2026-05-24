@@ -33,7 +33,7 @@ The project simulates user activity events such as creating posts or completing 
 - Kafka producer for publishing activity events
 - Kafka consumer for processing activity events
 - Redis ZSET leaderboard storage
-- Activity history API
+- Activity history API with pagination
 - Leaderboard ranking API
 - Swagger/OpenAPI documentation
 - Docker Compose setup for Kafka, Redis, and PostgreSQL
@@ -135,21 +135,27 @@ Response:
 ### Get Activity History
 
 ```http
-GET /api/activities
+GET /api/activities?page=0&size=5
 ```
 
 Response:
 
 ```json
-[
-  {
-    "id": 1,
-    "userId": 2,
-    "type": "POST_CREATED",
-    "points": 12,
-    "createdAt": "2026-05-20T19:00:44.921912"
-  }
-]
+{
+  "content": [
+    {
+      "id": 1,
+      "userId": 2,
+      "type": "POST_CREATED",
+      "points": 12,
+      "createdAt": "2026-05-20T19:00:44.921912"
+    }
+  ],
+  "totalElements": 2,
+  "totalPages": 1,
+  "size": 5,
+  "number": 0
+}
 ```
 
 ---
@@ -193,15 +199,15 @@ Kafka consumer
     ↓
 Redis leaderboard
     ↓
-REST API response
+Paginated REST API response
 ```
 
 ---
 
 ## Next Improvements
 
-- Add pagination for activity history
 - Add unit and integration tests
 - Add user profiles and usernames
 - Add JWT authentication
 - Add Kafka retry and dead letter queue support
+- Create custom pagination response DTO

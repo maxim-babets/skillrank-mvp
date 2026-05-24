@@ -7,6 +7,8 @@ import com.cyberolymp.skillrank.mvp.dto.ActivityRequest;
 import com.cyberolymp.skillrank.mvp.dto.ActivityResponse;
 import com.cyberolymp.skillrank.mvp.kafka.ActivityProducer;
 import com.cyberolymp.skillrank.mvp.repository.ActivityRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -50,16 +52,27 @@ public class ActivityService {
     return activityResponse;
     }
 
-    public List<ActivityHistoryResponse> getAllActivities(){
-    List<Activity> activities = activityRepository.findAll();
-    return activities.stream()
-            .map(activity -> new ActivityHistoryResponse(
-                    activity.getId(),
-                    activity.getUserId(),
-                    activity.getType(),
-                    activity.getPoints(),
-                    activity.getCreatedAt()
-            ))
-            .toList();
+//    public List<ActivityHistoryResponse> getAllActivities(){
+//    List<Activity> activities = activityRepository.findAll();
+//    return activities.stream()
+//            .map(activity -> new ActivityHistoryResponse(
+//                    activity.getId(),
+//                    activity.getUserId(),
+//                    activity.getType(),
+//                    activity.getPoints(),
+//                    activity.getCreatedAt()
+//            ))
+//            .toList();
+//    }
+
+    public Page<ActivityHistoryResponse> getAllActivities(Pageable pageable){
+        Page<Activity> activities = activityRepository.findAll(pageable);
+        return activities.map(activity -> new ActivityHistoryResponse(
+                activity.getId(),
+                activity.getUserId(),
+                activity.getType(),
+                activity.getPoints(),
+                activity.getCreatedAt()
+        ));
     }
 }

@@ -7,10 +7,13 @@ import com.cyberolymp.skillrank.mvp.dto.LeaderboardResponse;
 import com.cyberolymp.skillrank.mvp.leaderboard.LeaderboardService;
 import com.cyberolymp.skillrank.mvp.service.ActivityService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 
@@ -36,7 +39,7 @@ public class ActivityController {
     }
 
     @GetMapping("/api/activities/")
-    public List<ActivityHistoryResponse> getAllActivities(){
-        return activityService.getAllActivities() ;
+    public Page<ActivityHistoryResponse> getAllActivities(Pageable pageable){
+        return activityService.getAllActivities(pageable) ;
     }
 }
