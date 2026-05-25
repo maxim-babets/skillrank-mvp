@@ -20,6 +20,8 @@ The project simulates user activity events such as creating posts or completing 
 - Redis
 - Swagger/OpenAPI
 - Docker Compose
+- JUnit 5
+- Mockito
 - Maven
 
 ---
@@ -35,6 +37,7 @@ The project simulates user activity events such as creating posts or completing 
 - Redis ZSET leaderboard storage
 - Activity history API with pagination
 - Leaderboard ranking API
+- Unit tests for service layer
 - Swagger/OpenAPI documentation
 - Docker Compose setup for Kafka, Redis, and PostgreSQL
 
@@ -160,6 +163,24 @@ Response:
 
 ---
 
+## Testing
+
+The project currently includes unit tests for the service layer using:
+
+- JUnit 5
+- Mockito
+- Mocked repository and Kafka producer interactions
+- Service business logic verification
+
+Example tested scenarios:
+
+- Activity creation flow
+- Kafka event publishing
+- Repository save operations
+- Paginated activity history mapping
+
+---
+
 ## How to Run
 
 Start infrastructure:
@@ -172,6 +193,12 @@ Run the Spring Boot application:
 
 ```bash
 ./mvnw spring-boot:run
+```
+
+Run tests:
+
+```bash
+./mvnw test
 ```
 
 Open Swagger UI:
@@ -206,8 +233,9 @@ Paginated REST API response
 
 ## Next Improvements
 
-- Add unit and integration tests
+- Add integration tests
 - Add user profiles and usernames
 - Add JWT authentication
 - Add Kafka retry and dead letter queue support
 - Create custom pagination response DTO
+- Add CI/CD pipeline
