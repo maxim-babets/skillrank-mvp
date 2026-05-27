@@ -28,15 +28,18 @@ The project simulates user activity events such as creating posts or completing 
 
 ## Features
 
+- REST API for creating users
 - REST API for creating user activity events
 - Request validation with Jakarta Validation
 - Global exception handling for validation errors
-- PostgreSQL activity persistence
+- Custom 404 handling for missing users
+- PostgreSQL persistence
 - Kafka producer for publishing activity events
 - Kafka consumer for processing activity events
 - Redis ZSET leaderboard storage
 - Activity history API with pagination
 - Leaderboard ranking API
+- One-to-Many relationship between User and Activity
 - Unit tests for service layer
 - Swagger/OpenAPI documentation
 - Docker Compose setup for Kafka, Redis, and PostgreSQL
@@ -46,6 +49,10 @@ The project simulates user activity events such as creating posts or completing 
 ## Architecture Flow
 
 ```text
+POST /api/users
+        ↓
+Create User
+        ↓
 POST /api/activities
         ↓
 ActivityController
@@ -70,6 +77,35 @@ GET /api/leaderboard/top
 ---
 
 ## API Endpoints
+
+### Create User
+
+```http
+POST /api/users
+```
+
+Request body:
+
+```json
+{
+  "username": "test_user",
+  "email": "test@example.com",
+  "password": "password123"
+}
+```
+
+Response:
+
+```json
+{
+  "id": 1,
+  "username": "test_user",
+  "email": "test@example.com",
+  "createdAt": "2026-05-27T00:15:00"
+}
+```
+
+---
 
 ### Create Activity
 
@@ -105,6 +141,16 @@ Validation error example:
   "status": 400,
   "message": "Validation failed",
   "timestamp": "2026-05-20T20:45:00"
+}
+```
+
+User not found example:
+
+```json
+{
+  "status": 404,
+  "message": "User not found",
+  "timestamp": "2026-05-27T00:15:00"
 }
 ```
 
@@ -170,13 +216,18 @@ The project currently includes unit tests for the service layer using:
 - JUnit 5
 - Mockito
 - Mocked repository and Kafka producer interactions
+- Mocked UserRepository behavior
 - Service business logic verification
+- User existence validation testing
+- Activity/User relationship mapping tests
+- Paginated activity history mapping
 
 Example tested scenarios:
 
 - Activity creation flow
 - Kafka event publishing
 - Repository save operations
+- User existence validation
 - Paginated activity history mapping
 
 ---
@@ -233,9 +284,8 @@ Paginated REST API response
 
 ## Next Improvements
 
-- Add integration tests
-- Add user profiles and usernames
 - Add JWT authentication
 - Add Kafka retry and dead letter queue support
+- Add integration tests
 - Create custom pagination response DTO
 - Add CI/CD pipeline

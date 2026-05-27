@@ -1,4 +1,4 @@
-package com.cyberolymp.skillrank.mvp.dto;
+package com.cyberolymp.skillrank.mvp.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,9 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ActivityHistoryResponse {
+public class UserResponse {
     private Long id;
-    private Long userId;
-    private String type;
-    private Integer points;
+    private String username;
+    private String email;
     private LocalDateTime createdAt;
 }

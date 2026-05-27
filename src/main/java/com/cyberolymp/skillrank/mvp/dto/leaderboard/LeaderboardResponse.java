@@ -1,4 +1,4 @@
-package com.cyberolymp.skillrank.mvp.dto;
+package com.cyberolymp.skillrank.mvp.dto.leaderboard;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

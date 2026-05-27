@@ -1,6 +1,6 @@
 package com.cyberolymp.skillrank.mvp.kafka;
 
-import com.cyberolymp.skillrank.mvp.dto.ActivityEvent;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityEvent;
 import com.cyberolymp.skillrank.mvp.leaderboard.LeaderboardService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;

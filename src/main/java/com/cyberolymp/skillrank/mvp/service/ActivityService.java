@@ -1,18 +1,20 @@
 package com.cyberolymp.skillrank.mvp.service;
 
 import com.cyberolymp.skillrank.mvp.domain.Activity;
-import com.cyberolymp.skillrank.mvp.dto.ActivityEvent;
-import com.cyberolymp.skillrank.mvp.dto.ActivityHistoryResponse;
-import com.cyberolymp.skillrank.mvp.dto.ActivityRequest;
-import com.cyberolymp.skillrank.mvp.dto.ActivityResponse;
+import com.cyberolymp.skillrank.mvp.domain.User;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityEvent;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityHistoryResponse;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityRequest;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityResponse;
+import com.cyberolymp.skillrank.mvp.exception.UserNotFoundException;
 import com.cyberolymp.skillrank.mvp.kafka.ActivityProducer;
 import com.cyberolymp.skillrank.mvp.repository.ActivityRepository;
+import com.cyberolymp.skillrank.mvp.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class ActivityService {
@@ -20,10 +22,12 @@ public class ActivityService {
 
     private final ActivityProducer activityProducer;
     private final ActivityRepository activityRepository;
+    private final UserRepository userRepository;
 
-    public ActivityService(ActivityProducer activityProducer, ActivityRepository activityRepository) {
+    public ActivityService(ActivityProducer activityProducer, ActivityRepository activityRepository, UserRepository userRepository) {
         this.activityProducer = activityProducer;
         this.activityRepository = activityRepository;
+        this.userRepository = userRepository;
     }
 
     public ActivityResponse createActivity(ActivityRequest request) {
@@ -35,7 +39,11 @@ public class ActivityService {
     System.out.println("Activity processed successfully");
 
     Activity activity = new Activity();
-    activity.setUserId(request.getUserId());
+
+    User user = userRepository.findById(request.getUserId())
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+    activity.setUser(user);
     activity.setType(request.getType());
     activity.setPoints(request.getPoints());
     activity.setCreatedAt(LocalDateTime.now());
@@ -69,7 +77,7 @@ public class ActivityService {
         Page<Activity> activities = activityRepository.findAll(pageable);
         return activities.map(activity -> new ActivityHistoryResponse(
                 activity.getId(),
-                activity.getUserId(),
+                activity.getUser().getId(),
                 activity.getType(),
                 activity.getPoints(),
                 activity.getCreatedAt()

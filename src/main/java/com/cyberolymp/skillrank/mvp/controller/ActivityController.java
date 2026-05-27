@@ -1,9 +1,9 @@
 package com.cyberolymp.skillrank.mvp.controller;
 
-import com.cyberolymp.skillrank.mvp.dto.ActivityHistoryResponse;
-import com.cyberolymp.skillrank.mvp.dto.ActivityRequest;
-import com.cyberolymp.skillrank.mvp.dto.ActivityResponse;
-import com.cyberolymp.skillrank.mvp.dto.LeaderboardResponse;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityHistoryResponse;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityRequest;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityResponse;
+import com.cyberolymp.skillrank.mvp.dto.leaderboard.LeaderboardResponse;
 import com.cyberolymp.skillrank.mvp.leaderboard.LeaderboardService;
 import com.cyberolymp.skillrank.mvp.service.ActivityService;
 import jakarta.validation.Valid;

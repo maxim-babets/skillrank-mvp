@@ -6,22 +6,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "activities")
-public class Activity {
+@Entity
+@Table(name = "users")
+public class User {
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "user")
+    private List<Activity> activities;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String type;
-    private Integer points;
+    private String username;
+    private String password;
+    private String email;
     private LocalDateTime createdAt;
 }

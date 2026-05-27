@@ -1,4 +1,4 @@
-package com.cyberolymp.skillrank.mvp.dto;
+package com.cyberolymp.skillrank.mvp.dto.activity;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

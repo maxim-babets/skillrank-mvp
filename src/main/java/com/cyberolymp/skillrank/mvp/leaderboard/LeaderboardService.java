@@ -1,7 +1,7 @@
 package com.cyberolymp.skillrank.mvp.leaderboard;
 
-import com.cyberolymp.skillrank.mvp.dto.ActivityEvent;
-import com.cyberolymp.skillrank.mvp.dto.LeaderboardResponse;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityEvent;
+import com.cyberolymp.skillrank.mvp.dto.leaderboard.LeaderboardResponse;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package com.cyberolymp.skillrank.mvp.kafka;
 
-import com.cyberolymp.skillrank.mvp.dto.ActivityEvent;
+import com.cyberolymp.skillrank.mvp.dto.activity.ActivityEvent;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
